@@ -2,17 +2,22 @@ package main
 
 import (
 	"fmt"
-	"tiktok-video-processor/pkg/downloader"
-	"tiktok-video-processor/pkg/tiktokapi"
-	// "tiktok-video-processor/pkg/videoprocessor"
+	"os"
+
+	"github.com/bjornpagen/tiktok-video-processor/pkg/downloader"
+	"github.com/bjornpagen/tiktok-video-processor/pkg/tiktokapi"
 )
 
 func main() {
-	apiKey := "your-api-key-here"
+	apiKey := os.Getenv("TIKTOK_API_KEY")
+	if apiKey == "" {
+		fmt.Println("Error: TIKTOK_API_KEY environment variable not set")
+		return
+	}
 	tiktokAPI := tiktokapi.NewTikTokAPI(apiKey)
 
-	videoID := "ZSeQ2wk3q"
-	videoURL, err := tiktokAPI.GetVideoURL(videoID)
+	tiktokURL := "https://vm.tiktok.com/ZSeQ2wk3q/"
+	videoURL, err := tiktokAPI.GetVideoURL(tiktokURL)
 	if err != nil {
 		fmt.Println("Error getting video URL:", err)
 		return
